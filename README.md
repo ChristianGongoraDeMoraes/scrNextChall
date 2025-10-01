@@ -6,9 +6,14 @@ rotas publicas: login, register
 rota privada: calculadora
 
 roda com postgres na maquina.
-.env 
+    
+    .env 
 
-DATABASE_URL="postgresql://postgres:{PASSWORD}@localhost:5432/{DATABASE_NOME}?schema=public"
+    DATABASE_URL="postgresql://postgres:{PASSWORD}@localhost:5432/{DATABASE_NOME}?schema=public"
+    
+    SESSION_SECRET="iashfioaad"
+    
+    NODE_ENV = "dev"
 
 adicione sua database criada e a senha para acesso postgres no seu local.
 

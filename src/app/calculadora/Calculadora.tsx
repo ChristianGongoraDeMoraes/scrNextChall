@@ -177,7 +177,7 @@ export default function CalculadoraForm() {
                 <p className="p-3 border border-gray-300 w-full">{tipoPrevisao === "ano" ? "Ano" : "Mês"}</p>
                 <p className="p-3 border border-gray-300 w-full">Aporte Mensal</p>
                 <p className="p-3 border border-gray-300 w-full">Aporte Acumulado</p>
-                <p className="p-3 border border-gray-300 w-full">Rendimento Mês</p>
+                <p className="p-3 border border-gray-300 w-full">Rendimento {tipoPrevisao.charAt(0).toUpperCase() + tipoPrevisao.slice(1)}</p>
                 <p className="p-3 border border-gray-300 w-full">Rendimento Acumulado</p>
                 <p className="p-3 border border-gray-300 w-full">Total Acumulado</p>
             </div>

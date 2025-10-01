@@ -23,18 +23,20 @@ export default function LinhaResultado(props: LinhaResultadoProps){
             grid grid-cols-1 
             sm:grid-cols-3 
             text-center 
-            hover:bg-gray-100 cursor-pointer 
+            hover:bg-gray-300 cursor-pointer 
             border-b border-black
+            group
+            rounded-[5px]
         "
         >
-            <p className="p-3 font-medium border border-gray-300 w-full">
+            <p className="p-3 font-medium border border-gray-300 w-full group-hover:border-black rounded-[5px]">
                 {props.tipo === "ano" ? "Ano" : "Mês"} {props.mes}
             </p>
-            <p className="p-3 border border-gray-300 w-full">{formatBRL(props.aporte)}</p>
-            <p className="p-3 border border-gray-300 w-full">{formatBRL(props.acumulado)}</p>
-            <p className="p-3 border border-gray-300 w-full">{formatBRL(props.rendimento_mes)}</p>
-            <p className="p-3 border border-gray-300 w-full">{formatBRL(props.rendimento_acumulado)}</p>
-            <p className="p-3 border border-gray-300 w-full font-semibold">{formatBRL(props.total_acumulado)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.aporte)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.acumulado)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.rendimento_mes)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.rendimento_acumulado)}</p>
+            <p className="p-3 border border-gray-300 w-full font-semibold group-hover:border-black rounded-[5px]">{formatBRL(props.total_acumulado)}</p>
         </div>
     );
 }

@@ -27,16 +27,12 @@ export async function calcular(data: calcularType, tipoPrevisao: String): Promis
   const nomeDoCalculo = data.nomeDoCalculo || "sem_nome";
   const tipo = String(tipoPrevisao) || "mes";
   let taxaDecimal = 0;
-
-  if(tipo == "mes"){
-    taxaDecimal = (taxa / 100) / 12;
-  }else{
-    taxaDecimal = (taxa / 100);
-  }
+  taxaDecimal = (taxa/100);
 
   let valorTotal = inicial;
   let acumuladoAportes = inicial;
   let rendimentoAcumulado = 0;
+
 
   let resultados: LinhaResultadoProps[] = [];
   let meses = 1;
@@ -51,23 +47,66 @@ export async function calcular(data: calcularType, tipoPrevisao: String): Promis
 
   while (valorTotal < 1_000_000) {
     meses++;
+    let valorTotalNovo = 0;
+    let rendimentoMes = 0;
 
     acumuladoAportes += aporte;
 
-    const valorAntes = valorTotal + aporte; //Vt-1 + Am
-    const rendimentoMes = valorAntes * taxaDecimal; //(Vt-1 + Am) × R
-    valorTotal = valorAntes + rendimentoMes; //(Vt-1 + Am) × (1 + R)
+    // aplica o aporte antes dos juros
+    const valorAntes = valorTotal + aporte; 
+    
+    // crescimento do capital no mês // APLICA JUROS COM BASE NO SELECIONADO
+    
+    if (tipo === "ano") {
+      // aplica só no fim do ano
+      if (meses % 12 === 0) {
+        valorTotalNovo = valorAntes * (1 + taxaDecimal);
+        rendimentoMes = valorTotalNovo - valorAntes;
+      // meses que nao se aplica
+      }else{
+        valorTotalNovo = valorAntes;
+        rendimentoMes = valorTotalNovo - valorAntes;
+      }
+    } else {
+      // aplica todo mês
+      valorTotalNovo = valorAntes * (1 + taxaDecimal);
+      rendimentoMes = valorTotalNovo - valorAntes;
+    }
+    
+    valorTotal = valorTotalNovo;
 
     rendimentoAcumulado += rendimentoMes;
 
-    resultados.push({
-      mes: meses,
-      aporte: aporte,
-      acumulado: acumuladoAportes,
-      rendimento_mes: rendimentoMes,
-      rendimento_acumulado: rendimentoAcumulado,
-      total_acumulado: valorTotal,
-    });
+    if(tipo == "ano"){
+      if(meses % 12 === 0){
+        resultados.push({
+          mes: meses,
+          aporte: aporte,
+          acumulado: acumuladoAportes,
+          rendimento_mes: rendimentoMes,
+          rendimento_acumulado: rendimentoAcumulado,
+          total_acumulado: valorTotal,
+        });
+      }
+    }else if(tipo == "mes"){
+      resultados.push({
+          mes: meses,
+          aporte: aporte,
+          acumulado: acumuladoAportes,
+          rendimento_mes: rendimentoMes,
+          rendimento_acumulado: rendimentoAcumulado,
+          total_acumulado: valorTotal,
+        });
+    }else if(valorTotal >= 1_000_000){
+      resultados.push({
+          mes: meses,
+          aporte: aporte,
+          acumulado: acumuladoAportes,
+          rendimento_mes: rendimentoMes,
+          rendimento_acumulado: rendimentoAcumulado,
+          total_acumulado: valorTotal,
+        });
+    }
 
     if (meses > 1000 * 12) break; // trava de segurança
   }

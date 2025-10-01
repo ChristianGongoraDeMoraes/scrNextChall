@@ -56,7 +56,6 @@ export async function calcular(data: calcularType, tipoPrevisao: String): Promis
     const valorAntes = valorTotal + aporte; 
     
     // crescimento do capital no mês // APLICA JUROS COM BASE NO SELECIONADO
-    
     if (tipo === "ano") {
       // aplica só no fim do ano
       if (meses % 12 === 0) {

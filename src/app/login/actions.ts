@@ -3,8 +3,6 @@
 import { z } from "zod";
 import { createSession, deleteSession } from "../lib/session";
 import { redirect } from "next/navigation";
-import  bcrypt  from "bcrypt";
-import { prisma } from "../lib/prisma";
 
 const testUser = {
   id: "1",
@@ -31,26 +29,23 @@ export async function login(prevState: any, formData: FormData) {
 
   const { email, password } = result.data;
 
-  const user = await prisma.userM.findUnique({ where: { email } });
+  const res = await fetch(`${process.env.PATH_URL_DOMAIN}/api/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+    cache: "no-store",
+  });
 
-  if (user == null) {
-    return {
-      errors: {
-        email: ["Invalid email or password"],
-      },
-    };
+  if(!res.ok) { 
+    const errorData = await res.json().catch(() => ({}));
+    console.log(errorData.message)
+    return
   }
+  const data = await res.json();
 
-  const passwordMatch = await bcrypt.compare(password, user.password_hash);
-  
-  if( !passwordMatch ){
-    return {
-      errors: {
-        email: ["Invalid email or password"],
-      },
-    };
-  }
-  await createSession(String(user.id));
+  await createSession(String(data.userId));
   
   redirect("/calculadora");
 }

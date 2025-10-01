@@ -2,8 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import  bcrypt  from "bcrypt";
-import { prisma } from "../lib/prisma";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }).trim(),
@@ -27,10 +25,21 @@ export async function register(prevState: any, formData: FormData) {
   }
 
   const {email, password} = result.data;
-  const passhashed = await bcrypt.hash(password, 12);
-
-  await prisma.userM.create({
-    data: { email: email, password_hash: passhashed }
+  
+  const res = await fetch(`${process.env.PATH_URL_DOMAIN}/api/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+    cache: "no-store",
   });
+
+  if(!res.ok) { 
+    const errorData = await res.json().catch(() => ({}));
+    console.log(errorData.message)
+    return
+  }
+    
   redirect("/login")
 }

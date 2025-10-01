@@ -1,7 +1,6 @@
 "use server";
 
 import { calcularType, CalculationPlainM } from "./types";
-import { prisma } from "../lib/prisma";
 import { cookies } from "next/headers";
 import { decrypt } from "../lib/session";
 import { Calculation } from "@/generated/prisma";
@@ -96,7 +95,8 @@ export async function calcular(data: calcularType, tipoPrevisao: String): Promis
           rendimento_acumulado: rendimentoAcumulado,
           total_acumulado: valorTotal,
         });
-    }else if(valorTotal >= 1_000_000){
+    }
+    if(valorTotal >= 1_000_000){
       resultados.push({
           mes: meses,
           aporte: aporte,
@@ -114,18 +114,21 @@ export async function calcular(data: calcularType, tipoPrevisao: String): Promis
   const session = await decrypt(sessionToken) as SessionPayload | undefined;
 
   if(session){
-    await prisma.calculation.create({
-       data: { 
-         calculation_name: nomeDoCalculo,
-         calculation_date: new Date(),
-         initial_contribution: inicial,
-         monthly_contribution: aporte,
-         rate: taxa,
-         rate_type: String(tipoPrevisao),
-         months_to_reach_goal: meses,
-         user_id: parseInt(session.userId),
-        }
-     });
+    await fetch(`${process.env.PATH_URL_DOMAIN}/api/calc`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        nomeDoCalculo, 
+        data: new Date(),
+        tipoPrevisao, 
+        meses, 
+        inicial, 
+        userId: session.userId
+      }),
+      cache: "no-store",
+    });
   } 
 
 
@@ -140,13 +143,20 @@ export async function getHistorico(): Promise<CalculationPlainM[]>{
   let res: Calculation[] = [];
   let formatedRes: CalculationPlainM[] = [];
 
-  if(session){
-    res = await prisma.calculation.findMany({
-      where:  {
-        user_id: parseInt(session.userId)
-      }
-    });
-  }
+  if(!session) { return []}
+
+  let resCalculations = await fetch(`${process.env.PATH_URL_DOMAIN}/api/calc/${session.userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+  if(!resCalculations.ok) {return []}
+
+  const calculationsArray = await resCalculations.json();
+  res = calculationsArray.calculations;
+
 
   for(let i =  0; i < res.length; i++){
     const item = res[i];
@@ -163,9 +173,13 @@ export async function getHistorico(): Promise<CalculationPlainM[]>{
 
 
 export async function excluirItemHistorico(itemId: number){
-  await prisma.calculation.delete({
-    where: {
-      id: itemId,
+  await fetch(`${process.env.PATH_URL_DOMAIN}/api/calc/deleteItem/${itemId}`, 
+  {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
     },
-  });
+    cache: "no-store",
+  }
+);
 }

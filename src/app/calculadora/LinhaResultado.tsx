@@ -29,14 +29,12 @@ export default function LinhaResultado(props: LinhaResultadoProps){
             rounded-[5px]
         "
         >
-            <p className="p-3 font-medium border border-gray-300 w-full group-hover:border-black rounded-[5px]">
-                {props.tipo === "ano" ? "Ano" : "Mês"} {props.mes}
-            </p>
-            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.aporte)}</p>
+            <p className="p-3 font-medium border border-gray-300 w-full group-hover:border-black rounded-[5px]">Mês {props.mes}</p>
             <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.acumulado)}</p>
-            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.rendimento_mes)}</p>
-            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.rendimento_acumulado)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.aporte)}</p>
             <p className="p-3 border border-gray-300 w-full font-semibold group-hover:border-black rounded-[5px]">{formatBRL(props.total_acumulado)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.rendimento_acumulado)}</p>
+            <p className="p-3 border border-gray-300 w-full group-hover:border-black rounded-[5px]">{formatBRL(props.rendimento_mes)}</p>
         </div>
     );
 }

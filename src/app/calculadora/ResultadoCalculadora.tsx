@@ -13,12 +13,12 @@ export default function ResultadoCalculadora(props: ResultadoCalculadoraProps){
     return(
         <div className="mt-6 p-4 bg-white-50 border border-black-200 rounded-lg">
              <div className="grid grid-cols-1 sm:grid-cols-3  text-center font-bold border-b-2 border-black bg-gray-200">
-                <p className="p-3 border border-gray-300 w-full">{props.tipo === "ano" ? "Ano" : "Mês"}</p>
-                <p className="p-3 border border-gray-300 w-full">Aporte Mensal</p>
+                <p className="p-3 border border-gray-300 w-full">Mês</p>
                 <p className="p-3 border border-gray-300 w-full">Aporte Acumulado</p>
-                <p className="p-3 border border-gray-300 w-full">Rendimento {String(props.tipo).charAt(0).toUpperCase() + String(props.tipo).slice(1)}</p>
-                <p className="p-3 border border-gray-300 w-full">Rendimento Acumulado</p>
+                <p className="p-3 border border-gray-300 w-full">Aporte Mensal</p>
                 <p className="p-3 border border-gray-300 w-full">Total Acumulado</p>
+                <p className="p-3 border border-gray-300 w-full">Rendimento Acumulado</p>
+                <p className="p-3 border border-gray-300 w-full">Rendimento Mês</p>
             </div>
                 {props.resultados.map((res, i)=>(
                     <LinhaResultado

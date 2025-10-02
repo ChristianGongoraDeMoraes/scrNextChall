@@ -46,10 +46,7 @@ export default function ResultadoHistorico(props: ResultadoHistoricoProps){
                         <td className="p-2 border">R$ {item.initial_contribution.toFixed(2)}</td>
                         <td className="p-2 border">R$ {item.monthly_contribution.toFixed(2)}</td>
                         <td className="p-2 border">{item.rate.toFixed(2)}%</td>
-                        {item.rate_type == "ano" && 
-                        <td className="p-2 border">{item.months_to_reach_goal} {item.rate_type}s</td>}
-                        {item.rate_type == "mes" && 
-                        <td className="p-2 border">{item.months_to_reach_goal} {item.rate_type}</td>}
+                        <td className="p-2 border">{item.months_to_reach_goal} meses</td>
                       </tr>
                     ))}
                   </tbody>

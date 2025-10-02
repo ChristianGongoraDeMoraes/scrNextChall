@@ -6,12 +6,14 @@ import { calcularType, CalculationPlainM } from "./types";
 import { LinhaResultadoProps } from "./LinhaResultado";
 import ResultadoCalculadora from "./ResultadoCalculadora";
 import ResultadoHistorico from "./ResultadoHistorico";
+import ChartGanhos from "./Chart";
 
 
 
 export default function CalculadoraForm() {
     const [historico, setHistorico] = useState<CalculationPlainM[]>([]);
     const [showHistorico, setShowHistorico] = useState<boolean>(false);
+    const[showGrafico, setShowGrafico] = useState<boolean>(false);
 
     const [resultados, setResultados] = useState<LinhaResultadoProps[]>([]);
     const [tipoPrevisao, setTipoPrevisao] = useState<"mes" | "ano">("mes");
@@ -167,6 +169,13 @@ export default function CalculadoraForm() {
             >
               Historico
             </button>
+            <button 
+            type="button"
+              onClick={() => setShowGrafico(true)}
+              className="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 cursor-pointer"
+            >
+              Gráfico
+            </button>
           </div>
         </form>
 
@@ -174,6 +183,7 @@ export default function CalculadoraForm() {
       </div>
 
       {showHistorico && (<ResultadoHistorico historico={historico} setShowHistorico={setShowHistorico} excluirItemHistoricoF={excluirItemHistoricoF}/>)}
+      {showGrafico && <ChartGanhos resultados={resultados} setShowGrafico={setShowGrafico}/>}
     </main>
   );
 }

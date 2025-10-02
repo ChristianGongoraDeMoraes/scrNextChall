@@ -1,6 +1,7 @@
 Open [http://localhost:3000/register](http://localhost:3000/register)
 
 rotas publicas: /login, /register
+
 rota privada: /calculadora
 
     npm i

@@ -1,20 +1,23 @@
-npm run dev
-
 Open [http://localhost:3000/register](http://localhost:3000/register)
 
-rotas publicas: login, register
-rota privada: calculadora
+rotas publicas: /login, /register
 
-roda com postgres na maquina.
+rota privada: /calculadora
+
+    npm i
     
     .env 
-
-    DATABASE_URL="postgresql://postgres:{PASSWORD}@localhost:5432/{DATABASE_NOME}?schema=public"
+    {
+        __Crie database postgres local__
+        DATABASE_URL="postgresql://postgres:{PASSWORD}@localhost:5432/{DATABASE_NOME}?schema=public"
+        
+        SESSION_SECRET="iashfioaad"
+        
+        NODE_ENV = "dev"
     
-    SESSION_SECRET="iashfioaad"
+        PATH_URL_DOMAIN="http://localhost:3000"
+    }
+
+    npx prisma generate
     
-    NODE_ENV = "dev"
-
-adicione sua database criada e a senha para acesso postgres no seu local.
-
-npx prisma generate
+    npm run dev

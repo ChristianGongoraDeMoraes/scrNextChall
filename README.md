@@ -4,10 +4,9 @@ rotas publicas: /login, /register
 
 rota privada: /calculadora
 
-    npm i
-    npx prisma db pull
-    
-    npm run dev
+    npm i  //installar pacotes
+    npx prisma generate //alinhar prisma com db -> após configurar .env
+    npm run dev // Open [http://localhost:3000/register](http://localhost:3000/register)
 
     .env 
     {

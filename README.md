@@ -10,7 +10,7 @@ rota privada: /calculadora
 
     .env 
     {
-        __Crie database postgres local__
+        //Crie database postgres local e preencha PASSWORD e DATABASE_NOME com seus dados
         DATABASE_URL="postgresql://postgres:{PASSWORD}@localhost:5432/{DATABASE_NOME}?schema=public"
         
         SESSION_SECRET="iashfioaad"

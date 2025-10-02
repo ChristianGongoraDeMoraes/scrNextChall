@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { calcular, getHistorico,  excluirItemHistorico} from "./actions";
-import { number } from "zod";
 import { calcularType, CalculationPlainM } from "./types";
-import LinhaResultado, { LinhaResultadoProps } from "./LinhaResultado";
-import { Calculation } from "@/generated/prisma";
+import { LinhaResultadoProps } from "./LinhaResultado";
+import ResultadoCalculadora from "./ResultadoCalculadora";
+import ResultadoHistorico from "./ResultadoHistorico";
 
 
 
 export default function CalculadoraForm() {
-    //const [resultado, setResultado] = useState<string>("");
     const [historico, setHistorico] = useState<CalculationPlainM[]>([]);
     const [showHistorico, setShowHistorico] = useState<boolean>(false);
 
@@ -171,81 +170,10 @@ export default function CalculadoraForm() {
           </div>
         </form>
 
-        {resultados.length > 0 && (
-          <div className="mt-6 p-4 bg-white-50 border border-black-200 rounded-lg">
-             <div className="grid grid-cols-1 sm:grid-cols-3  text-center font-bold border-b-2 border-black bg-gray-200">
-                <p className="p-3 border border-gray-300 w-full">{tipoPrevisao === "ano" ? "Ano" : "Mês"}</p>
-                <p className="p-3 border border-gray-300 w-full">Aporte Mensal</p>
-                <p className="p-3 border border-gray-300 w-full">Aporte Acumulado</p>
-                <p className="p-3 border border-gray-300 w-full">Rendimento {tipoPrevisao.charAt(0).toUpperCase() + tipoPrevisao.slice(1)}</p>
-                <p className="p-3 border border-gray-300 w-full">Rendimento Acumulado</p>
-                <p className="p-3 border border-gray-300 w-full">Total Acumulado</p>
-            </div>
-                {resultados.map((res, i)=>(
-                    <LinhaResultado
-                        key={i}
-                        mes={res.mes}
-                        aporte={res.aporte}
-                        acumulado={res.acumulado}
-                        rendimento_mes={res.rendimento_mes}
-                        rendimento_acumulado={res.rendimento_acumulado}
-                        total_acumulado={res.total_acumulado}
-                        tipo={tipoPrevisao}
-                    />
-                ))}
-          </div>
-        )}
+        {resultados.length > 0 && (<ResultadoCalculadora tipo={tipoPrevisao} resultados={resultados}/>)}
       </div>
 
-      {showHistorico && (
-        <div className="fixed  inset-0 bg-black bg-opacity-70 flex justify-center flex-wrap items-center z-50 overflow-y-auto ">
-            <div className="bg-white rounded-lg p-6 w-[90%] min-h-[90vh] relative mt-10">
-              <button
-                onClick={() => setShowHistorico(false)}
-                className="absolute top-4 right-4 bg-red-500 text-black px-3 py-1 rounded hover:bg-red-600"
-              >
-                Fechar
-              </button>
-
-              <h2 className="text-lg font-bold mb-4 text-center text-black">
-                Histórico de Cálculos
-              </h2>
-
-              {historico.length === 0 ? (
-                <p className="text-center text-black-800">Nenhum cálculo encontrado.</p>
-              ) : (
-                <table className="w-full border border-gray-300 text-sm text-black">
-                  <thead className="bg-gray-200">
-                    <tr>
-                      <th className="p-2 border">Nome</th>
-                      <th className="p-2 border">Data</th>
-                      <th className="p-2 border">Aporte Inicial</th>
-                      <th className="p-2 border">Aporte Mensal</th>
-                      <th className="p-2 border">Taxa (%)</th>
-                      <th className="p-2 border">Tempo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {historico.map((item) => (
-                      <tr key={item.id} className="text-center text-black hover:bg-red-200 cursor-pointer" onClick={() => excluirItemHistoricoF(item.id)}>
-                        <td className="p-2 border">{item.calculation_name}</td>
-                        <td className="p-2 border">{new Date(item.calculation_date).toLocaleDateString('pt-BR')}</td>
-                        <td className="p-2 border">R$ {item.initial_contribution.toFixed(2)}</td>
-                        <td className="p-2 border">R$ {item.monthly_contribution.toFixed(2)}</td>
-                        <td className="p-2 border">{item.rate.toFixed(2)}%</td>
-                        {item.rate_type == "ano" && 
-                        <td className="p-2 border">{item.months_to_reach_goal} {item.rate_type}s</td>}
-                        {item.rate_type == "mes" && 
-                        <td className="p-2 border">{item.months_to_reach_goal} {item.rate_type}</td>}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-
-        </div>
-      )}
+      {showHistorico && (<ResultadoHistorico historico={historico} setShowHistorico={setShowHistorico} excluirItemHistoricoF={excluirItemHistoricoF}/>)}
     </main>
   );
 }

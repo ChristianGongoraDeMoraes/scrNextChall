@@ -123,7 +123,9 @@ export async function calcular(data: calcularType, tipoPrevisao: String): Promis
         nomeDoCalculo, 
         data: new Date(),
         tipoPrevisao, 
-        meses, 
+        meses,
+        taxa,
+        aporte,
         inicial, 
         userId: session.userId
       }),

@@ -5,7 +5,10 @@ rotas publicas: /login, /register
 rota privada: /calculadora
 
     npm i
+    npx prisma db pull
     
+    npm run dev
+
     .env 
     {
         __Crie database postgres local__
@@ -17,9 +20,3 @@ rota privada: /calculadora
     
         PATH_URL_DOMAIN="http://localhost:3000"
     }
-
-    npx generate prisma
-    
-    npx prisma generate
-    npx prisma migrate dev --name init
-    npm run dev

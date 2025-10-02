@@ -18,6 +18,8 @@ rota privada: /calculadora
         PATH_URL_DOMAIN="http://localhost:3000"
     }
 
-    npx prisma generate
+    npx generate prisma
     
+    npx prisma generate
+    npx prisma migrate dev --name init
     npm run dev
